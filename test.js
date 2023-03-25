@@ -5,12 +5,17 @@
  * 바구니의 순서를 어떻게 바꿀지 주어졌을 때, M번 바구니의 순서를 역순으로 만든 다음, 바구니에 적혀있는 번호를 가장 왼쪽 바구니부터 출력하는 프로그램을 작성하시오.
  */
 
-const fs = require("fs");
-const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
-let input = fs.readFileSync(filePath).toString().trim().split("\n");
-let [n, m] = input[0].split(" ").map(Number);
+const fs = require('fs');
+const filePath = process.platform === 'linux' ? '/dev/stdin' : 'input.txt';
+let input = fs.readFileSync(filePath).toString().trim().split('\n');
+let [n, m] = input[0].split(' ').map(Number);
+let arr = Array(n)
+  .fill(0)
+  .map((_, i) => i + 1);
 
-console.log(n);
+for (let i = 1; i <= m; i++) {
+  let tmp = input[i].split(' ');
+  arr.unshift(arr.splice(tmp[0], tmp[1]));
+}
 
-
-백준 10811
+console.log(arr);
