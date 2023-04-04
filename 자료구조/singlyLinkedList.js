@@ -134,3 +134,11 @@ list.push(201);
 list.push(250);
 list.push(350);
 list.push(999);
+
+/**
+ * Big O
+ * insert = O(1);
+ * Removal - O(1) or O(N) it depends on....
+ * Searching - O(N)
+ * Access - O(N)
+ *  */
