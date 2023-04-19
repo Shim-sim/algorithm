@@ -29,3 +29,19 @@ function fib(x) {
   else if (x === 1) return 1;
   else return fib(x - 1) + fib(x - 2);
 }
+
+// reverse
+function reverse(str) {
+  if (str === '') return '';
+  else {
+    return reverse(str.substring(1)) + str.charAt(0);
+  }
+}
+
+//palindrome
+function isPalindrome(str) {
+  if (str.length === 1) return true;
+  if (str.length === 2) return str[0] === str[1];
+  if (str[0] === str.slice(-1)) return isPalindrome(str.slice(1, -1));
+  return false;
+}
