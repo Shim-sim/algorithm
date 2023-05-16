@@ -1,8 +1,8 @@
-let input = require("fs")
-  .readFileSync("dev/stdin")
+let input = require('fs')
+  .readFileSync('dev/stdin')
   .toString()
   .trim()
-  .split("\n");
+  .split('\n');
 let num = Number(input[0]);
 
 function solution(num) {
@@ -20,6 +20,7 @@ function solution(num) {
       }
     }
   }
+  s;
   return count;
 }
 
