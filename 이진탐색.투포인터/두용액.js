@@ -20,10 +20,12 @@ while (start < end) {
     answer = [arr[start], arr[end]];
   }
 
-  if (sum < 0) {
-    start++;
-  } else {
+  if (sum > 0) {
+    // 두수의 합의 차이가 양수면 오른쪽 포인터를 저 작은 값을 가진
+    // 왼쪽으로 움직임으로써 0에 더 가깝게 한다
     end--;
+  } else {
+    start++;
   }
 }
 
