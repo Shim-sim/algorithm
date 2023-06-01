@@ -32,6 +32,7 @@ function spiralMatrix(matrix) {
       for (let i = right; i >= left; i--) {
         result.push(matrix[bottom][i]);
       }
+
       bottom--;
     }
 
