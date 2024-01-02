@@ -1,18 +1,18 @@
-const fs = require('fs');
-const filePath = process.platform === 'linux' ? '/dev/stdin' : 'input.txt';
-let input = fs.readFileSync(filePath).toString().trim().split('');
+const fs = require("fs");
+const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
+let input = fs.readFileSync(filePath).toString().trim().split("");
 let stack = [];
 let answer = 0;
 
 for (let i = 0; i < input.length; i++) {
   const string = input[i];
 
-  if (string === '(' && input[i + 1] === ')') {
+  if (string === "(" && input[i + 1] === ")") {
     answer += stack.length;
-    i += 1;
-  } else if (string === '(') {
+    i++;
+  } else if (string === "(") {
     stack.push(string);
-  } else if (string === ')') {
+  } else if (string === ")") {
     stack.pop();
     answer += 1;
   }
@@ -26,6 +26,7 @@ console.log(answer);
 // 3. ')'를 만났을 때,
 
 // 1번의 경우는 레이저를 쏘는 경우. 레이저를 쏘는 경우 스택에 있는 길이만큼 답에 더해주면된다.
+// 여기서 i값을 증가시켜주는 이유는 이미 레이저가 완성되었기때문에 ')'의 다음 문자로 넘어가야하기 때문
 // (레이저를 쏘면 막대기의 개수가 스틱 하나당 하나 씩 늘어난다. ex) 스틱 === 3 이면 레이져를 쐈을 때, 3개가 늘어난다.)
 
 // 2번의 경우는 스틱이 시작하는 부분, 막대기가 생기는 부분이니까 스택에 하나를 추가해준ㄷ.
