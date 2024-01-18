@@ -41,3 +41,8 @@ for (const item of newCard) {
 }
 
 console.log(answer.join(" "));
+
+// N이 500,000 M, 10,000,000이기 때문에 이중 for문은 무조건 시간초과다
+// 근데 첨에 생각한 풀이는 항상 ON2 다.
+// Map 혹은 Object로 해결할 수 있는데 나는 Map이 더 직관적으로 좋아보인다.
+// 이렇게 되면 O(n + m)이 되니까 충분했다.
