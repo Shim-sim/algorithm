@@ -26,3 +26,6 @@ while (j < N) {
 }
 
 console.log(minLength === Infinity ? 0 : minLength);
+
+// minLength의 값이 Infinity인 이유는 그냥 최대로 큰 값으로 계산 s의 최대값도 가능
+// 부분합 계산시 음수의 값이 있고 최소값을 구할경우 -Infinity로 한다.
