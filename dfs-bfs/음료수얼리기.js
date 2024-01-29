@@ -1,7 +1,7 @@
 function solution(input) {
-  let inputList = input.split('\n');
+  let inputList = input.split("\n");
 
-  let size = inputList[0].split(' ').map((x) => parseInt(x));
+  let size = inputList[0].split(" ").map((x) => parseInt(x));
   let n = size[0]; // 세로 y
   let m = size[1]; // 가로 x
 
@@ -9,7 +9,7 @@ function solution(input) {
 
   let graph = new Array();
   for (let i = 1; i <= n; i++) {
-    graph.push(inputList[i].split('').map((x) => parseInt(x)));
+    graph.push(inputList[i].split("").map((x) => parseInt(x)));
   }
 
   for (let i = 0; i < m; i++) {
@@ -37,7 +37,7 @@ function dfs(graph, curNodX, curNodY, maxX, maxY) {
     [1, 0],
     [0, 1],
     [-1, 0],
-  ]; // 상 우 하 좌
+  ]; // 탐색 범위 이해
 
   // 1. 방문
   graph[curNodY][curNodX] = 2;
