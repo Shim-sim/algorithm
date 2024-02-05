@@ -82,3 +82,58 @@ console.log(DFS_answer);
 //     1. 인접한 노드를 이전에 방문했다면 방문하지 않는다.
 //     2. 이전에 방문하지 않은 노드라면 해당 노드를 시작 노드로 한다.
 // 3. 시작 노드의 인접한 노드를 모두 탐색했다면 탐색을 종료한다.
+
+// -------- 기본 풀이 ///
+// const fs = require("fs");
+// const fileSync = process.platform === "linux" ? "/dev/stdin" : "input.txt";
+// const input = fs.readFileSync(fileSync).toString().trim().split("\n");
+
+// const [vertex, edge, start] = input.shift().split(" ").map(Number);
+// const graph = Array.from({ length: vertex + 1 }, () => []);
+
+// input.forEach((item) => {
+//   const [from, to] = item.split(" ").map(Number);
+//   graph[from].push(to);
+//   graph[to].push(from);
+// });
+
+// const dfs = (graph, start) => {
+//   const visited = [];
+//   let needVisited = [];
+//   needVisited.push(start);
+
+//   while (needVisited.length !== 0) {
+//     const curNode = needVisited.pop();
+
+//     if (!visited.includes(curNode)) {
+//       visited.push(curNode);
+
+//       const togoVisited = graph[curNode];
+//       needVisited = [...needVisited, ...togoVisited.sort((a, b) => b - a)];
+//     }
+//   }
+
+//   return visited;
+// };
+
+// const bfs = (graph, start) => {
+//   const visited = [];
+//   let needVisited = [];
+
+//   needVisited.push(start);
+
+//   while (needVisited.length !== 0) {
+//     const curNode = needVisited.shift();
+
+//     if (!visited.includes(curNode)) {
+//       visited.push(curNode);
+//       const togoVisited = graph[curNode];
+
+//       needVisited = [...needVisited, ...togoVisited.sort((a, b) => a - b)];
+//     }
+//   }
+//   return visited;
+// };
+
+// console.log(dfs(graph, start).join(" "));
+// console.log(bfs(graph, start).join(" "));
