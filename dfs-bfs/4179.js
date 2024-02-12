@@ -1,140 +1,71 @@
-class Node {
-  constructor(item) {
-    this.item = item;
-    this.next = null;
-  }
-}
-
-class Queue {
-  constructor() {
-    this.head = null;
-    this.tail = null;
-    this.length = 0;
-  }
-
-  push(item) {
-    const node = new Node(item);
-    if (this.head == null) {
-      this.head = node;
-    } else {
-      this.tail.next = node;
-    }
-
-    this.tail = node;
-    this.length += 1;
-  }
-
-  pop() {
-    const popItem = this.head;
-    this.head = this.head.next;
-    this.length -= 1;
-    return popItem.item;
-  }
-}
 const fs = require("fs");
-const input = fs.readFileSync("./dev/stdin").toString().trim().split("\n");
-const [N, M] = input.shift().trim().split(" ").map(Number);
-let board = input.map((v) => v.trim().split(""));
+const path = require("path");
+const filepath = process.platform === "linux" ? "/dev/stdin" : "./input.txt";
+const splitStr = process.platform !== "win32" ? "\n" : "\r\n";
+const input = fs
+  .readFileSync(path.resolve(__dirname, filepath))
+  .toString()
+  .trim()
+  .split(splitStr);
 
-const dx = [0, 0, -1, 1];
-const dy = [-1, 1, 0, 0];
-let answer = Infinity;
-let visited = Array.from(Array(N), () => Array(M).fill(false));
+const [R, C] = input[0].split(" ").map(Number);
+const matrix = input.slice(1, R + 1).map((el) => el.split(""));
 
-function findJH() {
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < M; j++) {
-      if (board[i][j] == "J") {
-        return [i, j];
+function solution(R, C, matrix) {
+  const fQueue = [];
+  const jQueue = [];
+
+  for (let y = 0; y < R; y++) {
+    for (let x = 0; x < C; x++) {
+      if (matrix[y][x] === "J") {
+        if (y === 0 || x === 0 || y === R - 1 || x === C - 1) return 1;
+        jQueue.push([y, x, 0]);
       }
-    }
-  }
-}
-
-function findFire() {
-  const fire = [];
-  for (let i = 0; i < N; i++) {
-    for (let j = 0; j < M; j++) {
-      if (board[i][j] == "F") {
-        fire.push([i, j]);
-      }
-    }
-  }
-  return fire;
-}
-
-function isExit(i, j) {
-  if (i == 0 || i == N - 1 || j == 0 || j == M - 1) {
-    return true;
-  }
-  return false;
-}
-
-const [jx, jy] = findJH();
-board[jx][jy] = ".";
-let fire = findFire();
-let f = new Queue();
-let j = new Queue();
-
-let jh = [[jx, jy, 1]];
-visited[jx][jy] = true;
-
-let flag = true;
-while (jh.length > 0 && flag) {
-  while (jh.length > 0) {
-    const [jx, jy, cnt] = jh.shift();
-    if (board[jx][jy] == "F") continue;
-    if (isExit(jx, jy)) {
-      answer = cnt;
-      flag = false;
-    } else {
-      j.push([jx, jy, cnt]);
-    }
-  }
-  if (!flag) break;
-
-  while (fire.length > 0) {
-    f.push(fire.shift());
-  }
-  while (f.length > 0) {
-    const [fx, fy] = f.pop();
-    for (let i = 0; i < 4; i++) {
-      const nfx = fx + dx[i];
-      const nfy = fy + dy[i];
-      if (
-        nfx >= 0 &&
-        nfy >= 0 &&
-        nfx < N &&
-        nfy < M &&
-        board[nfx][nfy] == "."
-      ) {
-        board[nfx][nfy] = "F";
-        fire.push([nfx, nfy]);
+      if (matrix[y][x] === "F") {
+        matrix[y][x] = 0;
+        fQueue.push([y, x, 0]);
       }
     }
   }
 
-  while (j.length > 0) {
-    const [jx, jy, cnt] = j.pop();
-    for (let i = 0; i < 4; i++) {
-      const njx = jx + dx[i];
-      const njy = jy + dy[i];
-      if (
-        njx >= 0 &&
-        njy >= 0 &&
-        njx < N &&
-        njy < M &&
-        !visited[njx][njy] &&
-        board[njx][njy] == "."
-      ) {
-        jh.push([njx, njy, cnt + 1]);
-        visited[njx][njy] = true;
+  const dx = [1, -1, 0, 0];
+  const dy = [0, 0, 1, -1];
+
+  while (fQueue.length) {
+    const [y, x, cnt] = fQueue.shift();
+
+    for (let i = 0; i < dx.length; i++) {
+      const [ny, nx] = [y + dy[i], x + dx[i]];
+
+      if (ny >= 0 && nx >= 0 && ny < R && nx < C) {
+        if (matrix[ny][nx] === "." || matrix[ny][nx] === "J") {
+          matrix[ny][nx] = cnt + 1;
+          fQueue.push([ny, nx, cnt + 1]);
+        }
       }
     }
   }
+
+  while (jQueue.length) {
+    const [y, x, cnt] = jQueue.shift();
+
+    if (cnt === 0) matrix[y][x] = 0;
+
+    for (let i = 0; i < dx.length; i++) {
+      const [ny, nx] = [y + dy[i], x + dx[i]];
+
+      if (ny >= 0 && nx >= 0 && ny < R && nx < C) {
+        if (matrix[ny][nx] === "." || matrix[ny][nx] > cnt + 1) {
+          matrix[ny][nx] = cnt + 1;
+          jQueue.push([ny, nx, cnt + 1]);
+          if (ny === 0 || nx === 0 || ny === R - 1 || nx === C - 1) {
+            return cnt + 2;
+          }
+        }
+      }
+    }
+  }
+  return "IMPOSSIBLE";
 }
 
-if (answer == Infinity) console.log("IMPOSSIBLE");
-else console.log(answer);
-
-// 백준 불! 다시 풀어보기
+console.log(solution(R, C, matrix));
