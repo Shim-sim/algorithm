@@ -10,20 +10,21 @@ const [m, n] = input.shift().split(" ").map(Number);
 const visted = Array.from({ length: n }, () => new Array(m).fill(false));
 let [white, blue] = [0, 0];
 
+// 상하좌우 설정
 const dx = [-1, 1, 0, 0];
 const dy = [0, 0, -1, 1];
 
-// W 계산하기
+// bfs
 const bfs = (x, y) => {
-  const queue = [];
+  // 현재 들어온 위치가 W인지, B인지 구분
   const team = input[x][y];
+  const queue = [];
   queue.push([x, y]);
   visted[x][y] = true;
-  let num = 0;
+  let num = 1;
 
   while (queue.length) {
     const [curX, curY] = queue.shift();
-    num++;
 
     for (let i = 0; i < 4; i++) {
       const nx = curX + dx[i];
@@ -32,13 +33,15 @@ const bfs = (x, y) => {
       // 네방향 방문 가능한지
       if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
 
+      // 아직 방문하지 않았고, 팀과 같으면
       if (!visted[nx][ny] && input[nx][ny] === team) {
+        num++;
         visted[nx][ny] = true;
         queue.push([nx, ny]);
       }
     }
   }
-
+  // 해당 팀에 맞게 값을 더해준다. 기존값 + 새로운값의 제곱
   team === "W" ? (white += num ** 2) : (blue += num ** 2);
 };
 
