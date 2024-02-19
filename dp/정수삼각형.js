@@ -1,33 +1,37 @@
+// 프로그래머스_정수삼각형
+// https://school.programmers.co.kr/learn/courses/30/lessons/43105
+
 const solution = (triangle) => {
-  let answer = 0;
-  const col = triangle.length;
-  for (let i = 1; i < col; i++) {
+  const length = triangle.length;
+  for (let i = 1; i < length; i++) {
     for (let j = 0; j < triangle[i].length; j++) {
+      //1번 로직 (왼쪽)
+      // 해당위치에 이전 값 더해주기
       if (j === 0) {
-        //1번 삼각형
         triangle[i][j] += triangle[i - 1][j];
+
+        //3번 로직 (반대편 끝)
+        // 해당위치에 이전 값 더해주기
       } else if (j === triangle[i].length - 1) {
-        //3번 삼각형
         triangle[i][j] += triangle[i - 1][j - 1];
-      } else {
         //2번 삼각형
+        // 양쪽 끝 변이 아닌경우 위의 두 값중 더 큰값을 더해준다.
+      } else {
         triangle[i][j] += Math.max(triangle[i - 1][j - 1], triangle[i - 1][j]);
       }
     }
   }
-  for (let i = 0; i < triangle[col - 1].length; i++) {
-    if (answer < triangle[col - 1][i]) {
-      answer = triangle[col - 1][i];
-    }
-  }
 
-  return answer;
+  return Math.max(...triangle[length - 1]);
 };
 
 console.log(solution([[7], [3, 8], [8, 1, 0], [2, 7, 4, 4], [4, 5, 2, 6, 5]]));
 
-// for문을 돌면서 triangle 배열을 그때 그때 최대값으로 변경을 해주었다.
+// 문제풀이 X
+// 정답 보고 재풀이
+// 이제는 조금은 이해가 되지만 다양한 문제들을 최대한 많이 풀어봐야할거 같다.
 
-// 각각의 숫자는 왼쪽 아래 대각선 또는 오른쪽 아래 대각선 이 두가지 선택지 뿐이다.
-
-// 그래서 i = 1부터 시작하면서   두 번째줄 3하고 8이 있는데 3은 왼쪽 대각선이 없으니 오른쪽 대각선 7밖에 선택하지 못한다.
+// 삼각형을 위에서부터 1층이라고 가정했을 때
+// 각층의 최대값은 항상 위층의 최대값이 더한 최대값이 된다.
+// 삼각형을 기준으로 1번은 왼쪽 대각선, 3번은 오른쪽 대각선으로 간다고 가정한다면 항상 그 값이 일치한다.
+// 다만 2번 같은 경우에는 위에서 만날 수 있는 두개의 합중 더 큰 값을 더해주면 된다.
