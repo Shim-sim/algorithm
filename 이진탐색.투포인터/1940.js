@@ -1,37 +1,32 @@
-// 백준 1940_주몽
-// https://www.acmicpc.net/problem/1940
-
 const fs = require("fs");
-const fileSync = process.platform === "linux" ? "/dev/stdin" : "input.txt";
-const input = fs.readFileSync(fileSync).toString().trim().split("\n");
+const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
+const [n, m, ...arr] = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const n = Number(input[0]);
-const m = Number(input[1]);
-const arr = input[2]
+let left = 0;
+let right = Number(n) - 1;
+let result = 0;
+const item = arr[0]
   .split(" ")
   .map(Number)
   .sort((a, b) => a - b);
 
-let count = 0;
-let left = 0;
-let right = n - 1;
-
 while (left < right) {
-  let sum = arr[left] + arr[right];
+  const total = item[left] + item[right];
 
-  if (sum === m) {
-    count++;
+  // 합이 같으면 결과를 1 올려준다 left를 이동한다.
+  if (total === Number(m)) {
+    result++;
     left++;
-  } else if (sum < m) {
+
+    // 합이 작으면 합을 늘리기 위해서 left를 이동
+  } else if (total < Number(m)) {
     left++;
-  } else if (sum > m) {
+
+    // 합이 크면 줄이기 위해서 Right로 이동
+  } else if (total > Number(m)) {
     right--;
   }
 }
+// 합을 기준으로 이동할 수 있는 이유는 정렬이 되어있기 때문
 
-console.log(count);
-
-// 문제 푸는데 걸린 시간 20분
-// 문제 난이도 하중?
-// 처음에 정렬을 안하고 문제를 풀었는데 계속 오답이 제출됐다.
-// 근데 이 문제는 정렬이 필요 없지않나?
+console.log(result);
