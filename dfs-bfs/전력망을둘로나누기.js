@@ -12,21 +12,21 @@ function solution(n, wires) {
     graph[to].push(from);
   });
 
-  // bfs 로직 start(시작), expect(제외 노드)
-  const bfs = (start, expect) => {
+  // bfs 시작과, 제외할 노드 받기
+  const bfs = (start, except) => {
     const queue = [start];
-    // 방문 처리
-    const visited = new Array(start + 1).fill(false);
+    const visited = Array.from({ length: start + 1 }, () => false);
     let count = 0; // 도달 가능한 노드의 수
 
     visited[start] = true;
 
     while (queue.length) {
       const curNode = queue.shift();
+      // 아직 방문하지 않았고, 제외 할 노드가 아니라면
 
       graph[curNode].forEach((item) => {
-        // 제외한 노드가 아니고, 아직 방문하지 않았다면
-        if (item !== expect && !visited[item]) {
+        // 제외할 노드가 아니고, 아직 방문하지 않았다면
+        if (item !== except && !visited[item]) {
           visited[item] = true;
           queue.push(item);
         }
@@ -37,7 +37,7 @@ function solution(n, wires) {
     return count;
   };
 
-  // 주어진 전선을 하나 씩 끊으면서 그 차이가 가장 낮은게 정답
+  // 반복문 돌면서 bfs실행시키고, 그 차이가 가장 적은 값을 정답으로
   wires.forEach((item) => {
     const [from, to] = item;
 
@@ -49,5 +49,6 @@ function solution(n, wires) {
 
 // 문제 해결 x 답보고 풀었다. (복습 필수)
 // 우선 차이값이 음수가 나올 수 있기 때문에 Math.abs()를 사용해야한다.
-// 그 외에는 그렇게 어렵지 않았지만.. 제외 노드 처리를 어떻게 구현해야할지 몰라서 답을 봤다.
-// 다시 복습이 필요한 문제
+// 그 외에는 그렇게 어렵지 않았지만..
+// 결국에는 연결 된 단선을 하나 씩 잘라가면서 모든 경우의 수를 구해야 정답을 도출해낼 수 있다.
+// 그러기 위해서는 bfs문제에 대해서 조금 더 익숙해질 필요가 있을 것 같다
