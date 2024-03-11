@@ -1,32 +1,29 @@
 function solution(progresses, speeds) {
   const answer = [];
   let days = 1;
-  let cnt = 0;
-  let progress = 0;
+  let result = 0;
+  let process;
 
-  // 모든 작업이 끝날때까지 반복
   while (progresses[0]) {
-    progress = progresses[0] + speeds[0] * days;
+    // 현재 진행중인 프로세스
+    process = progresses[0] + speeds[0] * days;
 
-    if (progress >= 100) {
-      cnt++;
+    // 진행률이 100%를 넘겼을 때
+    if (process >= 100) {
       progresses.shift();
       speeds.shift();
+      result++;
     } else {
-      // 배포 완료된 기능이 있는 경우
-      if (cnt > 0) {
-        answer.push(cnt);
+      // 배포 완료 된 기능이 있는 경우
+      if (result) {
+        answer.push(result);
       }
       days++;
-      cnt = 0;
+      result = 0;
     }
   }
 
-  answer.push(cnt);
+  // 마지막 progresses가 끝나고 끝난 결과를 push
+  answer.push(result);
   return answer;
 }
-
-const progresses = [93, 30, 55];
-const speeds = [1, 30, 5];
-
-console.log(solution(progresses, speeds));
