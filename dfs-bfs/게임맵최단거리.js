@@ -4,13 +4,13 @@
 function solution(maps) {
   const n = maps.length;
   const m = maps[0].length;
-  // 동, 서, 남, 북
-  const dx = [0, 0, 1, -1];
-  const dy = [1, -1, 0, 0];
+
+  // 상하좌우 설정
+  const dx = [1, -1, 0, 0];
+  const dy = [0, 0, -1, 1];
 
   const bfs = (x, y) => {
-    const queue = [];
-    queue.push([x, y]);
+    const queue = [[x, y]];
 
     while (queue.length) {
       const [curx, cury] = queue.shift();
@@ -18,19 +18,15 @@ function solution(maps) {
       for (let i = 0; i < 4; i++) {
         const nx = curx + dx[i];
         const ny = cury + dy[i];
-
-        // 방문이 가능한지 확인
+        // 범위를 벗어나면 continue
         if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
 
         if (maps[nx][ny] === 1) {
-          // 기존 위치의 값에서 1 더하기
           maps[nx][ny] = maps[curx][cury] + 1;
           queue.push([nx, ny]);
         }
       }
     }
-
-    // index는 0부터 시작하니까 1씩 빼주기
     return maps[n - 1][m - 1] > 1 ? maps[n - 1][m - 1] : -1;
   };
 
@@ -41,3 +37,7 @@ function solution(maps) {
 // 최단경로 탐색할 때는 bfs로 접근하는게 가장 좋은 것 같다.
 // n,m이 따로 주어지지 않아서 maps에서 n과 m의 값을 추출했는데 다른 방법도 있을 것 같다.
 // 그 외에는 어려움없이 방문가능한지 여부만 잘 체크하면 되는 기본적인 문제였다.
+
+//재풀이 후기
+// 로직 자체는 확실히 쉬운데 간만에 푸니까 헷갈렸다.
+// 많은 문제를 접하는 것과 더불어 시험전에는 알고리즘 유형별 풀이를 여러번 해야겠다.
