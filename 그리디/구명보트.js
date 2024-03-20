@@ -3,23 +3,24 @@
 
 function solution(people, limit) {
   people.sort((a, b) => a - b);
-  let count = 0;
-  let left = 0;
-  let right = people.length - 1;
 
-  while (left <= right) {
-    const total = people[left] + people[right];
+  let start = 0;
+  let end = people.length - 1;
+  let answer = 0;
+
+  while (start <= end) {
+    const total = people[start] + people[end];
 
     if (total > limit) {
-      right -= 1;
+      end--;
     } else if (total <= limit) {
-      left++;
-      right--;
+      start++;
+      end--;
     }
-    count++;
+    answer++;
   }
 
-  return count;
+  return answer;
 }
 
 // 정렬해서 그 다음 인덱스와의 합이 limit을 넘지 않으면 리턴.
