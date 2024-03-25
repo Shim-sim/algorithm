@@ -1,19 +1,17 @@
-// 백준_패션왕 신해빈
-
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const [n, ...input] = fs.readFileSync(filePath).toString().trim().split("\n");
 
 const num = Number(n);
-let cnt = -1;
-const arr = Array.from({ length: n }, () => []);
+let cnt = 0;
+const arr = Array.from({ length: num }, () => []);
 
-for (let i = 0; i < input.length; i++) {
-  if (!Number(input[i])) {
-    const [item, type] = input[i].split(" ");
-    arr[cnt].push([item, type]);
-  } else {
-    cnt++;
+let index = 0; // input 배열을 순회하기 위한 인덱스
+for (let i = 0; i < num; i++) {
+  const caseCount = Number(input[index++]); // 각 케이스별 아이템 수
+  for (let j = 0; j < caseCount; j++) {
+    const [item, type] = input[index++].split(" ");
+    arr[i].push([item, type]);
   }
 }
 
@@ -39,3 +37,5 @@ for (let i = 0; i < arr.length; i++) {
 }
 
 console.log(ans.join("\n"));
+
+// js로 input값을 처리하기에 조금 까다로웠던 문제같다.
